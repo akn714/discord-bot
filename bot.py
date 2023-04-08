@@ -5,7 +5,7 @@ import os
 import requests
 import json
 
-openai.api_importkey = os.getenv('OPENAI_KEY')
+openai.api_key = os.getenv('OPENAI_KEY')
 
 client = commands.Bot(command_prefix="$", intents=discord.Intents.all())
 
@@ -35,12 +35,13 @@ async def on_message(message):
     else:
         print(message.author)
         await message.channel.send('generating...')
-
-
-        await message.channel.send(openai.ChatCompletion.create(
-            model="gpt-3.5-turbo",
-            messagess=[
-                {"role": "user", "content": message.content}
-                ])["choices"][0]["message"]["content"])
+        try:
+            await message.channel.send(openai.ChatCompletion.create(
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "user", "content": message.content}
+                    ])["choices"][0]["message"]["content"])  
+        except Exception as e:
+            await message.channel.send(e)
 
 client.run(os.getenv('TOKEN'))
