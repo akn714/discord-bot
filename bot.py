@@ -22,6 +22,9 @@ async def on_ready():
 
 @client.event
 async def on_message(message):
+    if str(message.channel)!="chat-with-bot":
+        return
+
     if message.author == client.user:
         return
 
@@ -37,11 +40,15 @@ async def on_message(message):
         await message.channel.send('generating...')
         try:
             await message.channel.send(openai.ChatCompletion.create(
-                    model="gpt-3.5-turbo",
-                    messages=[
-                        {"role": "user", "content": message.content}
-                    ])["choices"][0]["message"]["content"])  
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "user", "content": message.content}
+                ])["choices"][0]["message"]["content"])  
         except Exception as e:
             await message.channel.send(e)
+        
+ 
+
+
 
 client.run(os.getenv('TOKEN'))
