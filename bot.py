@@ -15,6 +15,10 @@ def get_quote():
     quote = json_data[0]['q'] + ' -' + json_data[0]['a']
     return quote
 
+def get_joke():
+    joke = requests.get('https://jokes-api.gamhcrew.repl.co/')
+    return joke.text
+
 @client.event
 async def on_ready():
     print('we have logged in as %s'%client.user)
@@ -24,7 +28,6 @@ async def on_ready():
 async def on_message(message):
     if str(message.channel)!="chat-with-bot":
         return
-
     if message.author == client.user:
         return
 
@@ -32,18 +35,20 @@ async def on_message(message):
         await message.channel.send('Hello! ' + f'{message.author}')
     elif message.content.lower().startswith('how are you'):
         await message.channel.send('I am fine...Thanks for asking!')
-    elif message.content.startswith('inspire'):
+    elif message.content.lower().startswith('inspire'):
         quote = get_quote()
         await message.channel.send(quote)
+    elif message.content.lower().find("joke")!=-1:
+        await message.channel.send(get_joke())
     else:
         print(message.author)
         await message.channel.send('generating...')
         try:
             await message.channel.send(openai.ChatCompletion.create(
-                model="gpt-3.5-turbo",
-                messages=[
-                    {"role": "user", "content": message.content}
-                ])["choices"][0]["message"]["content"])  
+                    model="gpt-3.5-turbo",
+                    messages=[
+                        {"role": "user", "content": message.content}
+                    ])["choices"][0]["message"]["content"])  
         except Exception as e:
             await message.channel.send(e)
         
