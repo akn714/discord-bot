@@ -23,7 +23,7 @@ cd discord-bot
     ```shell
     pip install discord
     ```
-    * finally run the program:
-    ```shell
-    python bot.py
-    ```
+* finally run the program:
+```shell
+python bot.py
+```
