@@ -1,6 +1,10 @@
 import openai
 import requests
 import json
+import os
+
+openai.api_key = os.getenv('OPENAI_KEY')
+
 
 def get_quote():
     try:
@@ -28,7 +32,7 @@ def chat_gpt_get(content, debug=False):
                 {"role": "user", "content": content}
             ]
         )["choices"][0]["message"]["content"] 
-        return reponse
+        return response
     except Exception as e:
         print(f"[!] Failed to get Chat-GPT reponse, need to fix it, [error] {str(e)}")
 
@@ -36,3 +40,4 @@ def chat_gpt_get(content, debug=False):
             return f"[!] Failed to get Chat-GPT reponse, need to fix it, [error] {str(e)}"
         else:
             return "SORRY SOME INTERNAL ERROR !"
+
