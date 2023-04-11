@@ -20,7 +20,7 @@ def get_joke():
         print("[!] random joke api is not working, need to fix it")
         return "SORRY NO JOKE AVAILABLE !"
 
-def chat_gpt_get(content):
+def chat_gpt_get(content, debug=False):
     try:
         response = openai.ChatCompletion.create(
             model = "gpt-3.5-turbo",
@@ -30,6 +30,9 @@ def chat_gpt_get(content):
         )["choices"][0]["message"]["content"] 
         return reponse
     except Exception as e:
-        print("[!] Failed to get Chat-GPT reponse, need to fix it")
-        print(e)
-        return "SORRY SOME INTERNAL ERROR !"
+        print(f"[!] Failed to get Chat-GPT reponse, need to fix it, [error] {str(e)}")
+
+        if debug == True:
+            return f"[!] Failed to get Chat-GPT reponse, need to fix it, [error] {str(e)}"
+        else:
+            return "SORRY SOME INTERNAL ERROR !"
