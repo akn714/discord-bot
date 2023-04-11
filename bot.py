@@ -7,8 +7,6 @@ from discord.ext import commands
 import os
 from utils import *
 
-openai.api_key = os.getenv('OPENAI_KEY')
-
 client = commands.Bot(command_prefix="$", intents=discord.Intents.all())
 
 
@@ -40,7 +38,7 @@ async def on_message(message):
     else:
         print(message.author)
         await message.channel.send('generating...')
-        await chat_gpt_get(message.content)
+        await message.channel.send(chat_gpt_get(message.content))
 
 
 client.run(os.getenv('TOKEN'))
