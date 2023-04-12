@@ -22,23 +22,29 @@ async def on_message(message):
         return
 
     if message.content.lower().startswith('hello') or message.content.lower().startswith('hi'):
-        await message.channel.send('Hello! ' + f'{message.author}')
+        # await message.channel.send('Hello! ' + f'{message.author}')
+        await message.channel.send(f'Hello, {message.author}', reference=message)
 
     elif message.content.lower().startswith('how are you'):
-        await message.channel.send('I am fine...Thanks for asking!')
+        # await message.channel.send('I am fine...Thanks for asking!')
+        await message.channel.send('I am fine...Thanks for asking!', reference=message)
 
     elif message.content.lower().startswith('inspire'):
         quote = get_quote()
-        await message.channel.send(quote)
+        # await message.channel.send(quote)
+        await message.channel.send(quote, reference=message)
 
     elif message.content.lower().find("joke")!=-1:
         joke = get_joke()
-        await message.channel.send(joke)
+        # await message.channel.send(joke)
+        await message.channel.send(joke, reference=message)
 
     else:
         print(message.author)
         await message.channel.send('generating...')
-        await message.channel.send(chat_gpt_get(message.content))
+        content = chat_gpt_get(message.content, debub=True)
+        await message.channel.send(content, reference=message)
+
 
 
 client.run(os.getenv('TOKEN'))
